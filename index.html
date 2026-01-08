@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPAW Rescate | Ayuda Animal con BCH</title>
+  <script src="https://unpkg.com/@psf/badger-sdk@1.0.0-beta.2/dist/badger-sdk.min.js"></script>
+  <style>
+    :root { --bch-orange: #ff6c37; --dark-bg: #0f0f0f; --light-text: #e0e0e0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark-bg); color: var(--light-text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
+    .header { margin-bottom: 30px; }
+    .logo { font-size: 2.5rem; color: var(--bch-orange); margin: 10px 0; }
+    .sticker { max-width: 80px; margin: 10px auto; display: block; }
+    .card { background: #1a1a1a; border-radius: 15px; padding: 25px; margin: 20px 0; border: 1px solid #333; }
+    .btn { background: var(--bch-orange); color: white; border: none; padding: 12px 25px; font-size: 1rem; border-radius: 8px; cursor: pointer; margin: 10px; transition: all 0.3s; }
+    .btn:hover { background: #e05a2c; transform: scale(1.05); }
+    .bch-address { background: #222; padding: 10px; border-radius: 8px; font-family: monospace; word-break: break-all; margin: 15px 0; }
+    .counter { font-size: 2rem; color: var(--bch-orange); font-weight: bold; margin: 15px 0; }
+    .footer { margin-top: 40px; font-size: 0.9rem; color: #777; }
+    @media (max-width: 600px) { .container { padding: 15px; } .logo { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://minisatoshi.cash/resources/stickers/mini-satoshi-sticker-4.png" alt="MiniSatoshi Sticker" class="sticker">
+      <h1 class="logo">🐾 CPAW Rescate</h1>
+      <p>Tu BCH salva vidas. Conéctate y sé parte del cambio.</p>
+    </div>
+
+    <div class="card">
+      <h2>¿Cómo funciona?</h2>
+      <ol style="text-align: left; max-width: 600px; margin: 20px auto;">
+        <li>Conecta tu billetera BCH</li>
+        <li>Gana KZG jugando y aprendiendo sobre BCH</li>
+        <li>Convierte KZG en CPAW para ayudar a animales</li>
+        <li>¡Mira el impacto en tiempo real!</li>
+      </ol>
+      <button class="btn" id="connectWallet">Conectar Billetera BCH</button>
+      <p id="walletStatus" style="margin-top: 10px; min-height: 24px;"></p>
+    </div>
+
+    <div class="card">
+      <h2>Fondos para Animales</h2>
+      <div class="counter" id="fundCounter">0.0000 BCH</div>
+      <p>Donaciones acumuladas para comida y medicinas</p>
+      
+      <h3>¿Quieres donar ahora?</h3>
+      <div class="bch-address">bitcoincash:qrhvcy5xlegsxd9zqpzaw95535...</div>
+      <p>Copia esta dirección y envía BCH desde tu billetera</p>
+      <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrhvcy5xlegsxd9zqpzaw95535..." target="_blank" class="btn">Ver en el Explorador</a>
+    </div>
+
+    <div class="footer">
+      <p>Proyecto en construcción - <a href="https://t.me/CPAWRescate" style="color: var(--bch-orange);">Únete a nuestro Telegram</a></p>
+      <p>Hecho con ❤️ y <a href="https://minisatoshi.cash" target="_blank" style="color: var(--bch-orange);">MiniSatoshi Stickers</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Reemplaza con tu dirección BCH real
+    const DONATION_ADDRESS = "bitcoincash:qrhvcy5xlegsxd9zqpzaw95535...";
+    const FUND_COUNTER_ID = "fundCounter";
+    
+    // Simulación de fondos (actualiza manualmente según donaciones reales)
+    let currentFunds = 0.024; // Ejemplo inicial
+    document.getElementById(FUND_COUNTER_ID).textContent = currentFunds.toFixed(4) + " BCH";
+
+    // Conexión a Badger Wallet
+    document.getElementById("connectWallet").addEventListener("click", async () => {
+      try {
+        const badger = new window.BadgerSDK({
+          appName: "CPAWRescate",
+          chain: "BCH",
+          env: "production"
+        });
+
+        const address = await badger.getBCHAddress();
+        document.getElementById("walletStatus").innerHTML = `
+          ✅ Billetera conectada: <br><small>${address.slice(0, 10)}...${address.slice(-5)}</small>
+        `;
+        document.getElementById("connectWallet").disabled = true;
+        
+        // En el futuro: aquí iría la lógica para reclamar KZG
+        console.log("Dirección BCH conectada:", address);
+      } catch (error) {
+        document.getElementById("walletStatus").innerHTML = `
+          ❌ Error: ${error.message || "Permiso denegado"}
+        `;
+        console.error("Error al conectar wallet:", error);
+      }
+    });
+  </script>
+</body>
+</html>
