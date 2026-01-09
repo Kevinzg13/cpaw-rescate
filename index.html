@@ -7,18 +7,23 @@
   <script src="https://unpkg.com/@psf/badger-sdk@1.0.0-beta.2/dist/badger-sdk.min.js"></script>
   <style>
     :root { --bch-orange: #ff6c37; --dark-bg: #0f0f0f; --light-text: #e0e0e0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark-bg); color: var(--light-text); line-height: 1.6; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--dark-bg); color: var(--light-text); line-height: 1.6; margin: 0; padding: 0; }
     .container { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
     .header { margin-bottom: 30px; }
     .logo { font-size: 2.5rem; color: var(--bch-orange); margin: 10px 0; }
-    .sticker { max-width: 80px; margin: 10px auto; display: block; }
-    .card { background: #1a1a1a; border-radius: 15px; padding: 25px; margin: 20px 0; border: 1px solid #333; }
-    .btn { background: var(--bch-orange); color: white; border: none; padding: 12px 25px; font-size: 1rem; border-radius: 8px; cursor: pointer; margin: 10px; transition: all 0.3s; }
+    .sticker { max-width: 80px; margin: 10px auto; display: block; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+    .card { background: #1a1a1a; border-radius: 15px; padding: 25px; margin: 20px 0; border: 1px solid #333; box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
+    .btn { background: var(--bch-orange); color: white; border: none; padding: 12px 25px; font-size: 1rem; border-radius: 8px; cursor: pointer; margin: 10px; transition: all 0.3s; font-weight: bold; }
     .btn:hover { background: #e05a2c; transform: scale(1.05); }
-    .bch-address { background: #222; padding: 10px; border-radius: 8px; font-family: monospace; word-break: break-all; margin: 15px 0; }
+    .bch-address { background: #222; padding: 12px; border-radius: 8px; font-family: monospace; word-break: break-all; margin: 15px 0; font-size: 0.95rem; cursor: pointer; }
+    .bch-address:hover { background: #2a2a2a; }
     .counter { font-size: 2rem; color: var(--bch-orange); font-weight: bold; margin: 15px 0; }
     .footer { margin-top: 40px; font-size: 0.9rem; color: #777; }
-    @media (max-width: 600px) { .container { padding: 15px; } .logo { font-size: 2rem; } }
+    @media (max-width: 600px) { 
+      .container { padding: 15px; } 
+      .logo { font-size: 2rem; } 
+      .btn { padding: 10px 20px; font-size: 0.95rem; }
+    }
   </style>
 </head>
 <body>
@@ -31,41 +36,62 @@
 
     <div class="card">
       <h2>¿Cómo funciona?</h2>
-      <ol style="text-align: left; max-width: 600px; margin: 20px auto;">
+      <ol style="text-align: left; max-width: 600px; margin: 20px auto; text-align: center;">
         <li>Conecta tu billetera BCH</li>
-        <li>Gana KZG jugando y aprendiendo sobre BCH</li>
-        <li>Convierte KZG en CPAW para ayudar a animales</li>
+        <li>Gana KZG jugando y aprendiendo</li>
+        <li>Convierte KZG en CPAW para ayudar</li>
         <li>¡Mira el impacto en tiempo real!</li>
       </ol>
       <button class="btn" id="connectWallet">Conectar Billetera BCH</button>
-      <p id="walletStatus" style="margin-top: 10px; min-height: 24px;"></p>
+      <p id="walletStatus" style="margin-top: 10px; min-height: 24px; color: #ff6c37;"></p>
     </div>
 
     <div class="card">
       <h2>Fondos para Animales</h2>
-      <div class="counter" id="fundCounter">0.0000 BCH</div>
+      <div class="counter" id="fundCounter">0.0240 BCH</div>
       <p>Donaciones acumuladas para comida y medicinas</p>
       
       <h3>¿Quieres donar ahora?</h3>
-      <div class="bch-address">bitcoincash:qrhvcy5xlegsxd9zqpzaw95535...</div>
-      <p>Copia esta dirección y envía BCH desde tu billetera</p>
-      <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrhvcy5xlegsxd9zqpzaw95535..." target="_blank" class="btn">Ver en el Explorador</a>
+      <div class="bch-address" id="donationAddress" onclick="copyAddress()">bitcoincash:qrhvcy5xlegsxd9zqpzaw95535k250vdqj...</div>
+      <p id="copyMessage" style="color: #777; font-size: 0.85rem; height: 18px; margin: 5px 0;"></p>
+      <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrhvcy5xlegsxd9zqpzaw95535k250vdqj..." target="_blank" class="btn">Ver en el Explorador</a>
     </div>
 
     <div class="footer">
-      <p>Proyecto en construcción - <a href="https://t.me/CPAWRescate" style="color: var(--bch-orange);">Únete a nuestro Telegram</a></p>
-      <p>Hecho con ❤️ y <a href="https://minisatoshi.cash" target="_blank" style="color: var(--bch-orange);">MiniSatoshi Stickers</a></p>
+      <p>Proyecto en construcción - <a href="https://t.me/cpawrescate" style="color: var(--bch-orange); text-decoration: none;">Únete a nuestro Telegram</a></p>
+      <p>Hecho con ❤️ y <a href="https://minisatoshi.cash" target="_blank" style="color: var(--bch-orange); text-decoration: none;">MiniSatoshi Stickers</a></p>
     </div>
   </div>
 
   <script>
-    // Reemplaza con tu dirección BCH real
-    const DONATION_ADDRESS = "bitcoincash:qrhvcy5xlegsxd9zqpzaw95535...";
-    const FUND_COUNTER_ID = "fundCounter";
-    
-    // Simulación de fondos (actualiza manualmente según donaciones reales)
-    let currentFunds = 0.024; // Ejemplo inicial
-    document.getElementById(FUND_COUNTER_ID).textContent = currentFunds.toFixed(4) + " BCH";
+    // CONFIGURACIÓN PERSONALIZABLE - ¡MODIFICA ESTOS VALORES!
+    const CONFIG = {
+      DONATION_ADDRESS: "bitcoincash:qrhvcy5xlegsxd9zqpzaw95535k250vdqj...", // ¡REEMPLAZA CON TU DIRECCIÓN REAL!
+      EXPLORER_URL: "https://explorer.bitcoin.com/bch/address/bitcoincash:qrhvcy5xlegsxd9zqpzaw95535k250vdqj...", // ¡ACTUALIZA!
+      TELEGRAM_GROUP: "https://t.me/cpawrescate", // ¡ENLACE REAL DE TU GRUPO!
+      INITIAL_FUNDS: 0.024 // Valor inicial en BCH (actualiza según donaciones reales)
+    };
+
+    // Elementos DOM
+    const fundCounter = document.getElementById('fundCounter');
+    const donationAddress = document.getElementById('donationAddress');
+    const copyMessage = document.getElementById('copyMessage');
+
+    // Inicializar contador
+    fundCounter.textContent = CONFIG.INITIAL_FUNDS.toFixed(4) + " BCH";
+
+    // Actualizar enlaces con configuración
+    document.querySelector('a[href*="explorer.bitcoin.com"]').href = CONFIG.EXPLORER_URL;
+    document.querySelector('a[href*="t.me"]').href = CONFIG.TELEGRAM_GROUP;
+    donationAddress.textContent = CONFIG.DONATION_ADDRESS;
+
+    // Función para copiar dirección
+    function copyAddress() {
+      navigator.clipboard.writeText(CONFIG.DONATION_ADDRESS).then(() => {
+        copyMessage.textContent = "¡Dirección copiada!";
+        setTimeout(() => { copyMessage.textContent = ""; }, 2000);
+      });
+    }
 
     // Conexión a Badger Wallet
     document.getElementById("connectWallet").addEventListener("click", async () => {
@@ -81,12 +107,13 @@
           ✅ Billetera conectada: <br><small>${address.slice(0, 10)}...${address.slice(-5)}</small>
         `;
         document.getElementById("connectWallet").disabled = true;
+        document.getElementById("connectWallet").style.opacity = "0.7";
         
-        // En el futuro: aquí iría la lógica para reclamar KZG
+        // Aquí irá la lógica para reclamar KZG cuando esté lista
         console.log("Dirección BCH conectada:", address);
       } catch (error) {
         document.getElementById("walletStatus").innerHTML = `
-          ❌ Error: ${error.message || "Permiso denegado"}
+          ❌ Error: ${error.message || "No se pudo conectar la billetera"}
         `;
         console.error("Error al conectar wallet:", error);
       }
